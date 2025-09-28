@@ -31,14 +31,15 @@ Perfect for busy professionals who want to stay on top of their inbox while comm
    - Replace the default code with the contents of `Code.gs` from this repository
 
 2. **Configure Your Settings**:
-   - Update the configuration constants at the top of the script:
-   ```javascript
-   const GEMINI_API_KEY = "your-gemini-api-key-here";
-   const ELEVENLABS_API_KEY = "your-elevenlabs-api-key-here";
-   const VOICE_ID = "your-preferred-voice-id";
-   const RECIPIENT_EMAIL = "your-email@example.com";
-   const RECIPIENT_NAME = "Your Name";
-   ```
+   - In your Google Apps Script project, click the **gear icon** (Project Settings) in the left sidebar
+   - Scroll down to **"Script Properties"** section
+   - Click **"Add script property"** and add the following properties:
+     - `GEMINI_API_KEY`: Your Gemini API key
+     - `ELEVENLABS_API_KEY`: Your ElevenLabs API key  
+     - `ELEVENLABS_VOICE_ID`: Your preferred voice ID from ElevenLabs
+     - `RECIPIENT_EMAIL`: Your email address
+     - `RECIPIENT_NAME`: Your name for personalized podcast
+   - **Important**: The script will throw an error if any of these properties are missing or empty
 
 3. **Authorize the Script**:
    - Click **"Run"** to execute the function for the first time
@@ -106,7 +107,7 @@ Perfect for busy professionals who want to stay on top of their inbox while comm
 ### Customization Options
 - **Adjust email filtering**: Modify the Gmail search query in the code
 - **Change summary style**: Edit the Gemini prompt to match your preferences
-- **Voice selection**: Try different ElevenLabs voices by changing the `VOICE_ID`
+- **Voice selection**: Try different ElevenLabs voices by changing the `ELEVENLABS_VOICE_ID`
 - **Email limits**: Adjust `maxThreads` to process more or fewer emails
 
 ## Project Structure
@@ -137,11 +138,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Make sure you've run the script once manually and granted all permissions
 - Check that your Google account has access to Gmail
 
-**"API key invalid"**:
-- Verify your API keys are correctly copied (no extra spaces)
+**"API key invalid"** or **"Missing required script properties"**:
+- Verify your API keys are correctly copied in Script Properties (no extra spaces)
 - Ensure your Gemini API key starts with "AIza" and is properly formatted
 - Check that your ElevenLabs account is active
 - Make sure the Generative Language API is enabled in Google Cloud Console
+- Verify all 5 required script properties are set: GEMINI_API_KEY, ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID, RECIPIENT_EMAIL, RECIPIENT_NAME
 
 **"No emails found"**:
 - The script looks for emails from yesterday - make sure you have unread emails from the previous day
