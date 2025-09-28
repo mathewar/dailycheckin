@@ -39,7 +39,8 @@ Perfect for busy professionals who want to stay on top of their inbox while comm
      - `ELEVENLABS_VOICE_ID`: Your preferred voice ID from ElevenLabs
      - `RECIPIENT_EMAIL`: Your email address
      - `RECIPIENT_NAME`: Your name for personalized podcast
-   - **Important**: The script will throw an error if any of these properties are missing or empty
+     - `CONTEXT_DOC_ID`: (Optional) Google Doc ID containing your personal context
+   - **Important**: The script will throw an error if any of the required properties are missing or empty
 
 3. **Authorize the Script**:
    - Click **"Run"** to execute the function for the first time
@@ -109,6 +110,26 @@ Perfect for busy professionals who want to stay on top of their inbox while comm
 - **Change summary style**: Edit the Gemini prompt to match your preferences
 - **Voice selection**: Try different ElevenLabs voices by changing the `ELEVENLABS_VOICE_ID`
 - **Email limits**: Adjust `maxThreads` to process more or fewer emails
+- **Personal context**: Add a `CONTEXT_DOC_ID` property pointing to a Google Doc with your personal information, preferences, or background context for more personalized summaries
+
+### Using Personal Context (Optional)
+To make your email summaries more personalized and relevant:
+
+1. **Create a Google Doc** with your personal context, such as:
+   - Your job role and responsibilities
+   - Current projects you're working on
+   - Personal interests and preferences
+   - Important contacts or relationships
+   - Any specific information that would help the AI understand your context
+
+2. **Get the Document ID**:
+   - Open your Google Doc
+   - Copy the document ID from the URL (the long string between `/d/` and `/edit`)
+   - Example: `https://docs.google.com/document/d/1ABC123...XYZ/edit` → Document ID is `1ABC123...XYZ`
+
+3. **Add to Script Properties**:
+   - Set `CONTEXT_DOC_ID` to your document ID
+   - The script will automatically read this context and use it to personalize your email summaries
 
 ## Project Structure
 

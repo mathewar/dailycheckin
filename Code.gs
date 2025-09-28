@@ -8,6 +8,9 @@
  * - ELEVENLABS_VOICE_ID: Your preferred voice ID from ElevenLabs
  * - RECIPIENT_EMAIL: Your email address
  * - RECIPIENT_NAME: Your name for personalized podcast
+ * 
+ * Optional Script Properties:
+ * - CONTEXT_DOC_ID: Google Doc ID containing user context (e.g., preferences, background info)
  */
 
 function getConfigFromProperties() {
@@ -26,6 +29,9 @@ function getConfigFromProperties() {
     }
   });
   
+  // Add optional context doc ID
+  config.CONTEXT_DOC_ID = properties.getProperty('CONTEXT_DOC_ID');
+  
   if (missingProperties.length > 0) {
     throw new Error(`Missing required script properties: ${missingProperties.join(', ')}. Please set these in Project Settings > Script Properties.`);
   }
@@ -33,6 +39,18 @@ function getConfigFromProperties() {
   return config;
 }
 
+function getContextFromDoc(docId) {
+  if (!docId) return '';
+  
+  try {
+    const doc = DocumentApp.openById(docId);
+    const text = doc.getBody().getText();
+    return text.trim();
+  } catch (error) {
+    Logger.log(`Error reading context doc: ${error}`);
+    return '';
+  }
+}
 
 function emailToPodcast() {
   const config = getConfigFromProperties();
@@ -69,6 +87,10 @@ function summarizeWithGemini(emails, config) {
     `From: ${email.from}\nSubject: ${email.subject}\nBody: ${email.body}\n`
   ).join('\n');
   
+  // Get context from Google Doc if provided
+  const context = getContextFromDoc(config.CONTEXT_DOC_ID);
+  const contextSection = context ? `\n\nUser Context (use this to personalize the summary):\n${context}` : '';
+  
   const prompt = `You are creating a script that will be directly converted to audio using text-to-speech. Summarize the following emails into a concise, engaging personalized podcast script for ${config.RECIPIENT_NAME}. 
 
 IMPORTANT: This text will be read aloud by ElevenLabs TTS, so:
@@ -78,8 +100,9 @@ IMPORTANT: This text will be read aloud by ElevenLabs TTS, so:
 - Include natural pauses and transitions
 - Keep it under 500 words
 - Make it sound like a friendly, engaging podcast host
+- Use the user context below to personalize the summary and make it more relevant
 
-Emails to summarize:\n\n${emailText}`;
+Emails to summarize:\n\n${emailText}${contextSection}`;
 
   try {
     const response = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent', {
