@@ -1,11 +1,11 @@
 // keys below
 
-// const OPENAI_API_KEY =  
+// const GEMINI_API_KEY =  
 // const ELEVENLABS_API_KEY =
 
 /**
  * Converts the last day's unread emails into a podcast and emails it.
- * Uses ChatGPT for summarization and ElevenLabs for text-to-speech.
+ * Uses Google Gemini for summarization and ElevenLabs for text-to-speech.
  */
 
 const VOICE_ID = ""; // Replace with your voice ID from elevenlabs
@@ -32,7 +32,7 @@ function emailToPodcast() {
     return;
   }
 
-  const summary = summarizeWithChatGPT(emails);
+  const summary = summarizeWithGemini(emails);
   if (summary) {
     const audio = generatePodcastAudio(summary);
     if (audio) {
@@ -42,26 +42,32 @@ function emailToPodcast() {
 
 }
 
-function summarizeWithChatGPT(emails) {
+function summarizeWithGemini(emails) {
   const prompt = `Summarize the following emails for a concise, quirky and engaging personalized podcast for ${RECIPIENT_NAME}, it is from his Gmail inbox. Prioritize key details and format for spoken word. Keep it under 500 words:\n\n${emails.map(email => `From: ${email.from}\nSubject: ${email.subject}\nBody: ${email.body}\n\n`).join('')}`; // Removed "---" separators
 
   const options = {
     'method': 'post',
     'contentType': 'application/json',
-    'headers': { 'Authorization': 'Bearer ' + OPENAI_API_KEY },
+    'headers': { 'x-goog-api-key': GEMINI_API_KEY },
     'payload': JSON.stringify({
-      "model": "gpt-4-turbo",
-      "messages": [{ "role": "user", "content": prompt }],
-      "max_tokens": 600
+      "contents": [{
+        "parts": [{
+          "text": prompt
+        }]
+      }],
+      "generationConfig": {
+        "maxOutputTokens": 600,
+        "temperature": 0.7
+      }
     })
   };
 
   try {
-    const response = UrlFetchApp.fetch('https://api.openai.com/v1/chat/completions', options);
+    const response = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', options);
     const data = JSON.parse(response.getContentText());
-    return data.choices[0].message.content;
+    return data.candidates[0].content.parts[0].text;
   } catch (error) {
-    Logger.log("ChatGPT API Error: " + error);
+    Logger.log("Gemini API Error: " + error);
     return null;
   }
 }

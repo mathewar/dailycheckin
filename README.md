@@ -6,7 +6,7 @@ Transform your daily emails into a personalized podcast! This Google Apps Script
 
 **Email to Podcast** is a Google Apps Script that automates your daily email digest by:
 - Fetching unread emails from your Gmail inbox from the previous day
-- Using OpenAI's GPT-4 to create a concise, engaging summary
+- Using Google's Gemini AI to create a concise, engaging summary
 - Converting the summary to high-quality speech using ElevenLabs
 - Emailing you the podcast as an audio attachment
 
@@ -15,7 +15,7 @@ Perfect for busy professionals who want to stay on top of their inbox while comm
 ## Features
 
 - 📧 **Smart Email Filtering**: Automatically fetches yesterday's unread emails
-- 🤖 **AI Summarization**: Uses GPT-4 to create personalized, engaging summaries
+- 🤖 **AI Summarization**: Uses Google Gemini to create personalized, engaging summaries
 - 🎙️ **High-Quality Audio**: ElevenLabs text-to-speech with customizable voices
 - 📱 **Email Delivery**: Receives your daily podcast directly in your inbox
 - ⚙️ **Fully Configurable**: Easy setup with your own API keys and preferences
@@ -33,7 +33,7 @@ Perfect for busy professionals who want to stay on top of their inbox while comm
 2. **Configure Your Settings**:
    - Update the configuration constants at the top of the script:
    ```javascript
-   const OPENAI_API_KEY = "your-openai-api-key-here";
+   const GEMINI_API_KEY = "your-gemini-api-key-here";
    const ELEVENLABS_API_KEY = "your-elevenlabs-api-key-here";
    const VOICE_ID = "your-preferred-voice-id";
    const RECIPIENT_EMAIL = "your-email@example.com";
@@ -54,19 +54,24 @@ Perfect for busy professionals who want to stay on top of their inbox while comm
 
 ## Getting API Keys
 
-### OpenAI API Key (for GPT-4 Summarization)
+### Google Gemini API Key (for AI Summarization)
 
-1. **Sign up for OpenAI**:
-   - Visit [OpenAI Platform](https://platform.openai.com/)
-   - Create an account or sign in
+1. **Access Google AI Studio**:
+   - Visit [Google AI Studio](https://aistudio.google.com/)
+   - Sign in with your Google account
 
 2. **Generate API Key**:
-   - Go to [API Keys page](https://platform.openai.com/api-keys)
-   - Click **"Create new secret key"**
-   - Copy the key immediately (you won't see it again!)
-   - Add billing information to your account for API usage
+   - Click **"Get API key"** in the left sidebar
+   - Click **"Create API key in new project"** or select an existing project
+   - Copy the generated API key immediately
+   - The API key will be in the format: `AIza...`
 
-3. **Pricing**: GPT-4 Turbo costs approximately $0.01-0.03 per request for typical email summaries
+3. **Enable the API** (if needed):
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Navigate to "APIs & Services" > "Library"
+   - Search for "Generative Language API" and enable it
+
+4. **Pricing**: Gemini Pro has a generous free tier with 15 requests per minute, 1500 requests per day. Paid usage starts at very low rates.
 
 ### ElevenLabs API Key (for Text-to-Speech)
 
@@ -100,7 +105,7 @@ Perfect for busy professionals who want to stay on top of their inbox while comm
 
 ### Customization Options
 - **Adjust email filtering**: Modify the Gmail search query in the code
-- **Change summary style**: Edit the GPT-4 prompt to match your preferences
+- **Change summary style**: Edit the Gemini prompt to match your preferences
 - **Voice selection**: Try different ElevenLabs voices by changing the `VOICE_ID`
 - **Email limits**: Adjust `maxThreads` to process more or fewer emails
 
@@ -134,8 +139,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **"API key invalid"**:
 - Verify your API keys are correctly copied (no extra spaces)
-- Ensure your OpenAI account has billing enabled
+- Ensure your Gemini API key starts with "AIza" and is properly formatted
 - Check that your ElevenLabs account is active
+- Make sure the Generative Language API is enabled in Google Cloud Console
 
 **"No emails found"**:
 - The script looks for emails from yesterday - make sure you have unread emails from the previous day
@@ -150,7 +156,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Add support for multiple email accounts
 - [ ] Implement custom email filtering rules
 - [ ] Add summary length customization
-- [ ] Support for different AI models (Gemini, Claude)
+- [ ] Support for different AI models (Claude, GPT)
 - [ ] Web interface for easier configuration
 - [ ] Integration with calendar events
 - [ ] Multi-language support
