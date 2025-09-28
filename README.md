@@ -72,7 +72,7 @@ Perfect for busy professionals who want to stay on top of their inbox while comm
    - Navigate to "APIs & Services" > "Library"
    - Search for "Generative Language API" and enable it
 
-4. **Pricing**: Gemini Pro has a generous free tier with 15 requests per minute, 1500 requests per day. Paid usage starts at very low rates.
+4. **Pricing**: Gemini 2.0 Flash has a generous free tier with 15 requests per minute, 1500 requests per day. Paid usage starts at very low rates.
 
 ### ElevenLabs API Key (for Text-to-Speech)
 

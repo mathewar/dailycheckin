@@ -69,10 +69,20 @@ function summarizeWithGemini(emails, config) {
     `From: ${email.from}\nSubject: ${email.subject}\nBody: ${email.body}\n`
   ).join('\n');
   
-  const prompt = `Summarize the following emails for a concise, quirky and engaging personalized podcast for ${config.RECIPIENT_NAME}. Prioritize key details and format for spoken word. Keep it under 500 words:\n\n${emailText}`;
+  const prompt = `You are creating a script that will be directly converted to audio using text-to-speech. Summarize the following emails into a concise, engaging personalized podcast script for ${config.RECIPIENT_NAME}. 
+
+IMPORTANT: This text will be read aloud by ElevenLabs TTS, so:
+- Write in a conversational, natural speaking style
+- Use short, clear sentences that flow well when spoken
+- Avoid complex punctuation that might confuse the TTS
+- Include natural pauses and transitions
+- Keep it under 500 words
+- Make it sound like a friendly, engaging podcast host
+
+Emails to summarize:\n\n${emailText}`;
 
   try {
-    const response = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
+    const response = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent', {
       method: 'POST',
       headers: { 'x-goog-api-key': config.GEMINI_API_KEY, 'Content-Type': 'application/json' },
       payload: JSON.stringify({
